@@ -14,5 +14,5 @@ app.use(errorLogs)
 app.use(handleError)
 
 app.listen(port, (req, res) => {
-    console.log("hola")
+    
 })
