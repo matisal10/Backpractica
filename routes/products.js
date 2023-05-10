@@ -18,7 +18,7 @@ var jsonParser = bodyParser.json()
 
 // })
 
-router.get('/',validatorHandler(getProductSchem, "params"), async (req, res, next) => {
+router.get('/', async (req, res, next) => {
     const { id } = req.query;
     try {
         if (id) {
