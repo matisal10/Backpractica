@@ -27,19 +27,19 @@ router.post('/', jsonParser,validatorHendler(createUserSchema,'body'), async (re
     try {
         const body = req.body
         const create = await serviceUser.createUser(body)
-        return create
+        return {create}
     } catch (error) {
         next(error)
     }
 
 })
 
-router.patch('/:id', jsonParser,validatorHendler(updateUserSchema,'params'), async (req, res, next) => {
+router.patch('/:id', jsonParser,validatorHendler(updateUserSchema,'body'), async (req, res, next) => {
     try {
         const { id } = req.params
         const body = req.body
         const update = await serviceUser.updateUser({ id, body })
-        return update
+        return {update}
     } catch (error) {
         next(error)
     }
@@ -50,7 +50,7 @@ router.delete('/:id', jsonParser, async (req, res, next) => {
     try {
         const { id } = req.params
         const deleteUser = await serviceUser.deleteUser({id})
-        return deleteUser
+        return res.json(deleteUser)
     } catch (error) {
         next(error)
     }
