@@ -4,7 +4,9 @@ const { models } = require('../libs/sequelize')
 
 const getAllProducts = async () => {
     try {
-        const data = await models.Products.findAll()
+        const data = await models.Product.findAll({
+            include: ['category']
+        })
         return {
             data
         }
@@ -25,7 +27,7 @@ const createProduct = async (body) => {
 
 const getOneProduct = async (id) => {
     try {
-        const data = await models.Products.findByPk(id)
+        const data = await models.Products.findOne(id)
         if (!data) {
             throw boom.notFound('Product not found')
         }

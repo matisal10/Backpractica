@@ -10,11 +10,11 @@ var jsonParser = bodyParser.json()
 
 
 router.get('/', async (req, res, next) => {
-    const { id } = req.query;
     try {
+        const { id } = req.query;
         if (id) {
             const category = await servicesCategory.getOnecategory(id)
-            res.json(category)
+            res.send({category})
         }
         else {
             const products = await servicesCategory.getAllCategory()
@@ -29,7 +29,8 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', jsonParser, validatorHandler(createCategory, "body"), async (req, res, next) => {
     try {
-        const create = await servicesCategory.createCategory(req, res)
+        const body = req.body
+        const create = await servicesCategory.createCategory(body)
         return create
     } catch (error) {
         next(error)

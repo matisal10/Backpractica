@@ -19,16 +19,15 @@ var jsonParser = bodyParser.json()
 // })
 
 router.get('/', async (req, res, next) => {
-    const { id } = req.query;
     try {
+        const { id } = req.params;
         if (id) {
-            const getOneProduct = await productsServices.getOneProduct(req, res)
-            res.json(getOneProduct)
+            const getOneProduct = await productsServices.getOneProduct(id)
+            res.send({ getOneProduct })
         }
         else {
             const products = await productsServices.getAllProducts(req, res)
-
-            res.json(products)
+            res.send({ products })
         }
 
     } catch (error) {
@@ -37,10 +36,11 @@ router.get('/', async (req, res, next) => {
 })
 
 
-router.post('/',jsonParser, validatorHandler(schemaProductCreate, "body"), async (req, res, next) => {
+router.post('/', jsonParser, validatorHandler(schemaProductCreate, "body"), async (req, res, next) => {
     try {
-        const create = await productsServices.createProduct(req, res)
-        return create
+        const body = req.body
+        const create = await productsServices.createProduct(body)
+        res.send({ create })
     } catch (error) {
         next(error)
     }
