@@ -3,7 +3,9 @@ const { models } = require('../libs/sequelize')
 
 const getAllUsers = async (req, res) => {
     try {
-        const response = await models.User.findAll()
+        const response = await models.User.findAll({
+            include: ['client']
+        })
         return response
     } catch (error) {
         res.status(500).send(error.message)

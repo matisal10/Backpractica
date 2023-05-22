@@ -1,14 +1,10 @@
+const { boom } = require('@hapi/boom')
+// const getConnection = require('../libs/postgres')
+const { models } = require('../libs/sequelize')
 
-// const faker = require('faker')
-const pool = require('../libs/potsgres')
-const sequelize = require('../libs/sequelize')
-
-const getAllProducts = async (req, res) => {
+const getAllProducts = async () => {
     try {
-        const query = 'SELECT * FROM task'
-        // const response = await pool.query(query)
-        // return response.rows
-        const [data] = await sequelize.query(query)
+        const data = await models.Products.findAll()
         return {
             data
         }
@@ -17,30 +13,23 @@ const getAllProducts = async (req, res) => {
     }
 }
 
-const createProduct = async (req, res) => {
+const createProduct = async (body) => {
     try {
-        const body = req.body
-        console.log(body)
-        res.json({
-            ok: true,
-            data: body,
-        })
+        const product = await models.Product.create(body)
+        return product
     }
     catch (error) {
         console.log(error)
     }
 }
 
-const getOneProduct = (req, res) => {
+const getOneProduct = async (id) => {
     try {
-        const { id } = req.params
-        res.json({
-            'id': id,
-            'name': '',
-            "price": 23,
-            "category": ''
-        })
-        return id
+        const data = await models.Products.findByPk(id)
+        if (!data) {
+            throw boom.notFound('Product not found')
+        }
+        return data
     }
     catch (error) {
         console.log(error)

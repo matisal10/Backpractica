@@ -27,23 +27,27 @@ const UserSchema = {
         field: 'create_at',
         defaultValue: Sequelize.NOW
     },
-    role:{
-        allowNull:null,
+    role: {
+        allowNull: null,
         type: DataTypes.STRING,
         defaultValue: 'client'
     }
 }
 
 class User extends Model {
-    static associate() {
 
+    static associate(models) {
+        this.hasOne(models.Client, {
+            as: 'client',
+            foreignKey: 'userId'
+        })
     }
 
     static config(sequelize) {
         return {
             sequelize,
             tableName: USER_TABLE,
-            modelNmae: 'User',
+            modelName: 'User',
             timestamps: false
         }
     }
